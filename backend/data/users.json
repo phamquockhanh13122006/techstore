@@ -1,0 +1,9 @@
+[
+  {
+    "id": 1,
+    "name": "An",
+    "email": "an@gmail.com",
+    "passwordHash": "$2a$10$H7eenIf1swOlqm5dcKuqjeds4L.P7ML9UwC1ZJoHbYLwj826b6UXa",
+    "role": "user"
+  }
+]

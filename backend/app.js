@@ -1,0 +1,27 @@
+const express = require("express");
+const session = require("express-session");
+const cors = require("cors");
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+app.use(cors({ origin: true, credentials: true }));
+app.use(express.json());
+app.use(
+  session({
+    secret: "techstore-secret-change-me",
+    resave: false,
+    saveUninitialized: false,
+    cookie: { httpOnly: true, maxAge: 1000 * 60 * 60 * 24 },
+  })
+);
+
+app.use("/api/products", require("./routes/productRoutes"));
+app.use("/api/auth", require("./routes/authRoutes"));
+app.use("/api/orders", require("./routes/orderRoutes"));
+
+app.use((req, res) => {
+  res.status(404).json({ success: false, message: "Không tìm thấy" });
+});
+
+app.listen(PORT, () => console.log(`Server chạy tại http://localhost:${PORT}`));

@@ -19,6 +19,7 @@ app.use(
 app.use("/api/products", require("./routes/productRoutes"));
 app.use("/api/auth", require("./routes/authRoutes"));
 app.use("/api/orders", require("./routes/orderRoutes"));
+app.use("/api/admin/orders", require("./routes/adminOrderRoutes"));
 
 app.use((req, res) => {
   res.status(404).json({ success: false, message: "Không tìm thấy" });

@@ -16,4 +16,12 @@ h1 { margin-top: 0; }
 .price { color: #dc2626; font-weight: bold; }
 .card a { color: #2563eb; text-decoration: none; }
 .error { color: #dc2626; }
-
+.detail { display: flex; gap: 32px; margin-top: 20px; background: white;
+          padding: 24px; border-radius: 8px; flex-wrap: wrap; }
+.detail img { width: 100%; max-width: 400px; object-fit: contain; }
+.detail .info { flex: 1; min-width: 260px; }
+.category { color: #64748b; }
+.price.big { font-size: 28px; }
+.btn { background: #2563eb; color: white; border: none; padding: 12px 24px;
+       border-radius: 6px; font-size: 16px; cursor: pointer; }
+.btn:hover { background: #1d4ed8; }

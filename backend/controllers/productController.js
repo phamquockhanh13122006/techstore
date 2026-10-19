@@ -1,31 +1,27 @@
-const fs = require("fs");
-const path = require("path");
+const productModel = require("../models/productModel");
+const asyncHandler = require("../middleware/asyncHandler");
 
-const FILE = path.join(__dirname, "../data/products.json");
-const readAll = () => JSON.parse(fs.readFileSync(FILE, "utf8"));
-const writeAll = (products) =>
-  fs.writeFileSync(FILE, JSON.stringify(products, null, 2));
+// id trong URL không phải số nguyên thì coi như không tìm thấy (tránh lỗi ép kiểu của Mongoose)
+const parseId = (value) => {
+  const id = Number(value);
+  return Number.isInteger(id) ? id : null;
+};
 
-exports.getProducts = (req, res) => {
-  const keyword = String(req.query.keyword || "").trim().toLowerCase();
-  let products = readAll();
-  if (keyword) {
-    products = products.filter(
-      (p) =>
-        p.name.toLowerCase().includes(keyword) ||
-        p.category.toLowerCase().includes(keyword)
-    );
-  }
+const notFound = (res) =>
+  res.status(404).json({ success: false, message: "Không tìm thấy sản phẩm" });
+
+exports.getProducts = asyncHandler(async (req, res) => {
+  const keyword = String(req.query.keyword || "").trim();
+  const products = await productModel.findAll(keyword);
   res.json({ success: true, data: products });
-};
+});
 
-exports.getProductById = (req, res) => {
-  const product = readAll().find((p) => p.id === Number(req.params.id));
-  if (!product) {
-    return res.status(404).json({ success: false, message: "Không tìm thấy sản phẩm" });
-  }
+exports.getProductById = asyncHandler(async (req, res) => {
+  const id = parseId(req.params.id);
+  const product = id === null ? null : await productModel.findById(id);
+  if (!product) return notFound(res);
   res.json({ success: true, data: product });
-};
+});
 
 function checkFields(data, requireAll) {
   if (requireAll || data.name !== undefined) {
@@ -47,35 +43,29 @@ function checkFields(data, requireAll) {
   return null;
 }
 
-exports.createProduct = (req, res) => {
+exports.createProduct = asyncHandler(async (req, res) => {
   const error = checkFields(req.body, true);
   if (error) {
     return res.status(400).json({ success: false, message: error });
   }
 
   const { name, category, price, image, description } = req.body;
-  const products = readAll();
-  const product = {
-    id: products.length ? Math.max(...products.map((p) => p.id)) + 1 : 1,
+  const product = await productModel.create({
     name: name.trim(),
     category: category.trim(),
     price: Number(price),
     image:
       image || "https://placehold.co/400x300?text=" + encodeURIComponent(name.trim()),
     description: description || "",
-  };
-  products.push(product);
-  writeAll(products);
+  });
 
   res.status(201).json({ success: true, message: "Thêm sản phẩm thành công", data: product });
-};
+});
 
-exports.updateProduct = (req, res) => {
-  const products = readAll();
-  const product = products.find((p) => p.id === Number(req.params.id));
-  if (!product) {
-    return res.status(404).json({ success: false, message: "Không tìm thấy sản phẩm" });
-  }
+exports.updateProduct = asyncHandler(async (req, res) => {
+  const id = parseId(req.params.id);
+  const product = id === null ? null : await productModel.findById(id);
+  if (!product) return notFound(res);
 
   const error = checkFields(req.body, false);
   if (error) {
@@ -89,18 +79,13 @@ exports.updateProduct = (req, res) => {
   if (image !== undefined) product.image = image;
   if (description !== undefined) product.description = description;
 
-  writeAll(products);
+  await product.save();
   res.json({ success: true, message: "Cập nhật sản phẩm thành công", data: product });
-};
+});
 
-exports.deleteProduct = (req, res) => {
-  const products = readAll();
-  const index = products.findIndex((p) => p.id === Number(req.params.id));
-  if (index === -1) {
-    return res.status(404).json({ success: false, message: "Không tìm thấy sản phẩm" });
-  }
-
-  products.splice(index, 1);
-  writeAll(products);
+exports.deleteProduct = asyncHandler(async (req, res) => {
+  const id = parseId(req.params.id);
+  const deleted = id === null ? null : await productModel.remove(id);
+  if (!deleted) return notFound(res);
   res.json({ success: true, message: "Xóa sản phẩm thành công" });
-};
+});

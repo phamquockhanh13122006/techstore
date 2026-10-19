@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const session = require("express-session");
 const cors = require("cors");
@@ -32,4 +33,12 @@ app.use((err, req, res, next) => {
   res.status(500).json({ success: false, message: "Lỗi server" });
 });
 
-app.listen(PORT, () => console.log(`Server chạy tại http://localhost:${PORT}`));
+
+const connectDB = require("./config/db");
+
+connectDB()
+  .then(() => app.listen(PORT, () => console.log(`Server chạy tại http://localhost:${PORT}`)))
+  .catch((err) => {
+    console.error("Lỗi kết nối MongoDB:", err.message);
+    process.exit(1);
+  });

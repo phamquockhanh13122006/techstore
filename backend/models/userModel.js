@@ -1,35 +1,19 @@
-const fs = require("fs");
-const path = require("path");
-
-const FILE = path.join(__dirname, "../data/users.json");
-
-function readAll() {
-  try {
-    return JSON.parse(fs.readFileSync(FILE, "utf8"));
-  } catch {
-    return [];
-  }
-}
-
-function writeAll(users) {
-  fs.writeFileSync(FILE, JSON.stringify(users, null, 2));
-}
+const { User } = require("./schemas");
 
 exports.findByEmail = (email) =>
-  readAll().find((u) => u.email.toLowerCase() === String(email).toLowerCase());
+  User.findOne({ email: String(email).toLowerCase() });
 
-exports.findById = (id) => readAll().find((u) => u.id === id);
+exports.findById = (id) => User.findOne({ id });
 
-exports.create = ({ name, email, passwordHash }) => {
-  const users = readAll();
-  const user = {
-    id: users.length ? Math.max(...users.map((u) => u.id)) + 1 : 1,
+exports.findByIds = (ids) => User.find({ id: { $in: ids } });
+
+exports.create = async ({ name, email, passwordHash }) => {
+  const last = await User.findOne().sort({ id: -1 });
+  return User.create({
+    id: last ? last.id + 1 : 1,
     name,
     email,
     passwordHash,
     role: "user",
-  };
-  users.push(user);
-  writeAll(users);
-  return user;
+  });
 };

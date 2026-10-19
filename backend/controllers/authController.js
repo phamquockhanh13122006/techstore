@@ -1,9 +1,10 @@
 const bcrypt = require("bcryptjs");
 const userModel = require("../models/userModel");
+const asyncHandler = require("../middleware/asyncHandler");
 
 const publicUser = (u) => ({ id: u.id, name: u.name, email: u.email, role: u.role });
 
-exports.register = (req, res) => {
+exports.register = asyncHandler(async (req, res) => {
   const { name, email, password } = req.body;
 
   if (!name || !email || !password) {
@@ -12,18 +13,18 @@ exports.register = (req, res) => {
   if (String(password).length < 6) {
     return res.status(400).json({ success: false, message: "Mật khẩu tối thiểu 6 ký tự" });
   }
-  if (userModel.findByEmail(email)) {
+  if (await userModel.findByEmail(email)) {
     return res.status(400).json({ success: false, message: "Email đã được đăng ký" });
   }
 
   const passwordHash = bcrypt.hashSync(password, 10);
-  userModel.create({ name, email, passwordHash });
+  await userModel.create({ name, email, passwordHash });
   res.status(201).json({ success: true, message: "Đăng ký thành công" });
-};
+});
 
-exports.login = (req, res) => {
+exports.login = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
-  const user = email && userModel.findByEmail(email);
+  const user = email && (await userModel.findByEmail(email));
 
   if (!user || !bcrypt.compareSync(String(password || ""), user.passwordHash)) {
     return res.status(401).json({ success: false, message: "Sai email hoặc mật khẩu" });
@@ -31,7 +32,7 @@ exports.login = (req, res) => {
 
   req.session.user = { id: user.id };
   res.json({ success: true, user: publicUser(user) });
-};
+});
 
 exports.logout = (req, res) => {
   req.session.destroy(() => {
@@ -40,10 +41,10 @@ exports.logout = (req, res) => {
   });
 };
 
-exports.me = (req, res) => {
-  const user = req.session.user && userModel.findById(req.session.user.id);
+exports.me = asyncHandler(async (req, res) => {
+  const user = req.session.user && (await userModel.findById(req.session.user.id));
   if (!user) {
     return res.status(401).json({ success: false, message: "Bạn chưa đăng nhập" });
   }
   res.json({ success: true, user: publicUser(user) });
-};
+});

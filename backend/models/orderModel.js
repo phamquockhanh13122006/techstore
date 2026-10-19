@@ -1,44 +1,15 @@
-const fs = require("fs");
-const path = require("path");
+const { Order } = require("./schemas");
 
-const FILE = path.join(__dirname, "../data/orders.json");
-
-function readAll() {
-  try {
-    return JSON.parse(fs.readFileSync(FILE, "utf8"));
-  } catch {
-    return [];
-  }
-}
-
-function writeAll(orders) {
-  fs.writeFileSync(FILE, JSON.stringify(orders, null, 2));
-}
-
-exports.create = (order) => {
-  const orders = readAll();
-  const newOrder = {
-    id: orders.length ? Math.max(...orders.map((o) => o.id)) + 1 : 1,
-    ...order,
-    createdAt: new Date().toISOString(),
-  };
-  orders.push(newOrder);
-  writeAll(orders);
-  return newOrder;
+exports.create = async (order) => {
+  const last = await Order.findOne().sort({ id: -1 });
+  return Order.create({ id: last ? last.id + 1 : 1, ...order });
 };
 
-exports.findByUser = (userId) =>
-  readAll()
-    .filter((o) => o.userId === userId)
-    .reverse();
-    // ===== Dành cho admin =====
-exports.findAll = () => readAll().reverse();
+// Đơn của một người dùng, mới nhất lên đầu
+exports.findByUser = (userId) => Order.find({ userId }).sort({ id: -1 });
 
-exports.updateStatus = (id, status) => {
-  const orders = readAll();
-  const order = orders.find((o) => o.id === Number(id));
-  if (!order) return null;
-  order.status = status;
-  writeAll(orders);
-  return order;
-};
+// ===== Dành cho admin =====
+exports.findAll = () => Order.find().sort({ id: -1 });
+
+exports.updateStatus = (id, status) =>
+  Order.findOneAndUpdate({ id }, { status }, { new: true });

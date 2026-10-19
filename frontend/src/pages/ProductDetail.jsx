@@ -1,8 +1,10 @@
+import { useCart } from '../context/CartContext'
 import { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 
 export default function ProductDetail() {
   const { id } = useParams()
+  const { addToCart } = useCart()
   const [product, setProduct] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -43,7 +45,9 @@ export default function ProductDetail() {
           <p className="category">Danh mục: {product.category}</p>
           <p className="price big">{Number(product.price).toLocaleString('vi-VN')} đ</p>
           <p>{product.description}</p>
-          <button className="btn">Thêm vào giỏ hàng</button>
+          <button className="btn" onClick={() => { addToCart(product); alert('Đã thêm vào giỏ hàng!') }}>
+  Thêm vào giỏ hàng
+</button>
         </div>
       </div>
     </div>

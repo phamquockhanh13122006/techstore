@@ -7,15 +7,19 @@ function requireLogin(req, res, next) {
   next();
 }
 
-function requireAdmin(req, res, next) {
-  if (!req.session.user) {
-    return res.status(401).json({ success: false, message: "Bạn chưa đăng nhập" });
+async function requireAdmin(req, res, next) {
+  try {
+    if (!req.session.user) {
+      return res.status(401).json({ success: false, message: "Bạn chưa đăng nhập" });
+    }
+    const user = await userModel.findById(req.session.user.id);
+    if (!user || user.role !== "admin") {
+      return res.status(403).json({ success: false, message: "Chỉ admin được phép" });
+    }
+    next();
+  } catch (err) {
+    next(err);
   }
-  const user = userModel.findById(req.session.user.id);
-  if (!user || user.role !== "admin") {
-    return res.status(403).json({ success: false, message: "Chỉ admin được phép" });
-  }
-  next();
 }
 
 module.exports = { requireLogin, requireAdmin };

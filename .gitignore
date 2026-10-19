@@ -1,2 +1,7 @@
 node_modules/
 cookie.txt
+.env
+user.txt
+admin.txt
+cookie.txt
+*.zip

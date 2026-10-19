@@ -31,3 +31,14 @@ exports.findByUser = (userId) =>
   readAll()
     .filter((o) => o.userId === userId)
     .reverse();
+    // ===== Dành cho admin =====
+exports.findAll = () => readAll().reverse();
+
+exports.updateStatus = (id, status) => {
+  const orders = readAll();
+  const order = orders.find((o) => o.id === Number(id));
+  if (!order) return null;
+  order.status = status;
+  writeAll(orders);
+  return order;
+};

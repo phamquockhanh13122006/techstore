@@ -25,3 +25,15 @@ h1 { margin-top: 0; }
 .btn { background: #2563eb; color: white; border: none; padding: 12px 24px;
        border-radius: 6px; font-size: 16px; cursor: pointer; }
 .btn:hover { background: #1d4ed8; }
+.cart-item { display: flex; align-items: center; gap: 16px; background: white;
+             padding: 12px; border-radius: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+.cart-item img { width: 90px; height: 70px; object-fit: contain; }
+.cart-info { flex: 1; min-width: 160px; }
+.cart-info h3 { margin: 0 0 6px; font-size: 16px; }
+.qty { display: flex; align-items: center; gap: 10px; }
+.qty button { width: 30px; height: 30px; border: 1px solid #cbd5e1; background: white;
+              border-radius: 4px; cursor: pointer; font-size: 16px; }
+.subtotal { width: 140px; text-align: right; font-weight: bold; }
+.remove { background: none; border: none; color: #dc2626; cursor: pointer; }
+.cart-total { text-align: right; margin-top: 20px; }
+.btn.secondary { background: #64748b; margin-right: 8px; }

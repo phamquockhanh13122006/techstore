@@ -24,5 +24,12 @@ app.use("/api/admin/orders", require("./routes/adminOrderRoutes"));
 app.use((req, res) => {
   res.status(404).json({ success: false, message: "Không tìm thấy" });
 });
+app.use((err, req, res, next) => {
+  if (err.type === "entity.parse.failed") {
+    return res.status(400).json({ success: false, message: "JSON gửi lên không hợp lệ" });
+  }
+  console.error(err);
+  res.status(500).json({ success: false, message: "Lỗi server" });
+});
 
 app.listen(PORT, () => console.log(`Server chạy tại http://localhost:${PORT}`));

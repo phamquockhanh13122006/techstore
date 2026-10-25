@@ -13,3 +13,4 @@ exports.findAll = () => Order.find().sort({ id: -1 });
 
 exports.updateStatus = (id, status) =>
   Order.findOneAndUpdate({ id }, { status }, { new: true });
+exports.findById = (id) => Order.findOne({ id });

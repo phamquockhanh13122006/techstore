@@ -52,3 +52,23 @@ exports.getMyOrders = asyncHandler(async (req, res) => {
   const orders = await orderModel.findByUser(req.session.user.id);
   res.json({ success: true, data: orders });
 });
+exports.cancelOrder = asyncHandler(async (req, res) => {
+  const id = Number(req.params.id);
+  const order = Number.isInteger(id) ? await orderModel.findById(id) : null;
+
+  // Không phải đơn của mình thì coi như không tồn tại
+  if (!order || order.userId !== req.session.user.id) {
+    return res.status(404).json({ success: false, message: "Không tìm thấy đơn hàng" });
+  }
+
+  if (order.status !== "pending") {
+    return res.status(400).json({
+      success: false,
+      message: "Chỉ hủy được đơn đang chờ xử lý",
+    });
+  }
+
+  order.status = "cancelled";
+  await order.save();
+  res.json({ success: true, message: "Đã hủy đơn hàng", data: order });
+});

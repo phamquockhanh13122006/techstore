@@ -1,8 +1,43 @@
-import { Link } from 'react-router-dom'
+import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
+import { useAuth } from '../context/AuthContext'
 
 export default function Cart() {
   const { items, removeFromCart, updateQuantity, clearCart, totalPrice } = useCart()
+  const { user } = useAuth()
+  const navigate = useNavigate()
+  const [error, setError] = useState('')
+  const [submitting, setSubmitting] = useState(false)
+
+  async function handleOrder() {
+    if (!user) {
+      alert('Bạn cần đăng nhập để đặt hàng.')
+      navigate('/login')
+      return
+    }
+    setSubmitting(true)
+    setError('')
+    try {
+      const res = await fetch('/api/orders', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({
+          items: items.map(i => ({ productId: i.id, quantity: i.quantity }))
+        })
+      })
+      const json = await res.json()
+      if (!res.ok) throw new Error(json.message || 'Đặt hàng thất bại')
+      clearCart()
+      alert('Đặt hàng thành công!')
+      navigate('/orders')
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setSubmitting(false)
+    }
+  }
 
   if (items.length === 0) {
     return (
@@ -39,8 +74,11 @@ export default function Cart() {
 
       <div className="cart-total">
         <h2>Tổng cộng: {totalPrice.toLocaleString('vi-VN')} đ</h2>
+        {error && <p className="error">{error}</p>}
         <button className="btn secondary" onClick={clearCart}>Xóa hết</button>
-        <button className="btn">Đặt hàng</button>
+        <button className="btn" onClick={handleOrder} disabled={submitting}>
+          {submitting ? 'Đang đặt...' : 'Đặt hàng'}
+        </button>
       </div>
     </div>
   )

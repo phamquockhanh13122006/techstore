@@ -37,3 +37,8 @@ h1 { margin-top: 0; }
 .remove { background: none; border: none; color: #dc2626; cursor: pointer; }
 .cart-total { text-align: right; margin-top: 20px; }
 .btn.secondary { background: #64748b; margin-right: 8px; }
+.auth-box { max-width: 380px; margin: 40px auto; background: white; padding: 24px;
+            border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,.1); }
+.auth-box input { display: block; width: 100%; padding: 10px 12px; margin-bottom: 12px;
+                  border: 1px solid #cbd5e1; border-radius: 6px; font-size: 16px; }
+.hello { color: #fbbf24; }

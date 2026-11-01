@@ -1,20 +1,20 @@
 # TechStore – Website bán thiết bị điện tử
 
-Bài tập lớn cuối kì: website bán thiết bị điện tử (điện thoại, laptop, phụ kiện).
+Bài tập lớn cuối kì: website bán thiết bị điện tử (điện thoại, laptop, máy tính bảng, phụ kiện).
 
 - **Frontend:** React (Vite) + React Router
 - **Backend:** Node.js + Express, xác thực bằng session (cookie), mật khẩu băm bằng bcryptjs
-- **Lưu trữ dữ liệu:** file JSON trong `backend/data/`
+- **Cơ sở dữ liệu:** MongoDB (mongoose)
 
 ## Thành viên và phân công
 
 | Thành viên | Vai trò | Phần việc |
 |---|---|---|
-| (Người 1) | Backend | API sản phẩm, đăng ký/đăng nhập, đặt hàng |
-| (Người 2) | Frontend | Giao diện React, giỏ hàng, gọi API |
-| (Người 3) | Admin và tài liệu | API admin (quản lý sản phẩm, đơn hàng), README, tài liệu API |
+| (Phạm Quốc Khánh) | Backend | API sản phẩm, đăng ký/đăng nhập, đặt hàng, hủy đơn |
+| (Nguyễn Vũ Nam Khánh) | Frontend | Giao diện React, giỏ hàng, gọi API |
+| (Phạm Việt Hưng) | Admin và tài liệu | API admin (quản lý sản phẩm, đơn hàng), README, tài liệu API |
 
-> Thay phần trong ngoặc bằng họ tên và MSSV của từng bạn.
+
 
 ## Cấu trúc thư mục
 
@@ -22,34 +22,62 @@ Bài tập lớn cuối kì: website bán thiết bị điện tử (điện tho
 techstore/
 ├── backend/
 │   ├── app.js
+│   ├── seed.js        # nạp dữ liệu mẫu vào MongoDB
+│   ├── config/        # kết nối database
 │   ├── controllers/
 │   ├── routes/
 │   ├── models/
-│   ├── middleware/
-│   └── data/          # products.json, users.json, orders.json
+│   └── middleware/
 ├── frontend/
 └── README.md
 ```
 
 ## Cài đặt và chạy
 
-Yêu cầu: Node.js 18 trở lên.
+Yêu cầu: Node.js 18 trở lên và MongoDB.
 
-### Backend
+### 1. Bật MongoDB
+
+Cách dùng Docker (lần đầu):
+
+```bash
+docker run -d --name mongo -p 27017:27017 mongo:7
+```
+
+Những lần sau (container đã có sẵn):
+
+```bash
+docker start mongo
+```
+
+Hoặc dùng MongoDB Atlas và điền chuỗi kết nối `mongodb+srv://...` vào `MONGO_URI` bên dưới.
+
+### 2. Backend
+
+Tạo file `backend/.env`:
+
+```
+MONGO_URI=mongodb://127.0.0.1:27017/techstore
+```
+
+Cài đặt, nạp dữ liệu mẫu (chỉ cần làm lần đầu) và chạy:
 
 ```bash
 cd backend
 npm install
-npm run dev
+node seed.js
+npm start
 ```
 
-Server chạy tại `http://localhost:3000`. Nếu thấy dòng `Server chạy tại http://localhost:3000` là thành công.
+Server chạy tại `http://localhost:3000`. Thấy dòng `Server chạy tại http://localhost:3000` là thành công.
 
 Lưu ý:
+- Server chỉ mở cổng sau khi kết nối MongoDB thành công. Nếu thấy `Lỗi kết nối MongoDB: ECONNREFUSED` thì MongoDB chưa chạy.
 - Chỉ chạy **một** server tại một thời điểm. Nếu báo `EADDRINUSE` thì cổng 3000 đang có server khác chạy.
-- Thư mục `data/` đã được `nodemon.json` loại khỏi danh sách theo dõi, để server không tự khởi động lại (làm mất đăng nhập) mỗi khi có đơn hàng mới.
 
-### Frontend
+### 3. Frontend
+
+Mở terminal thứ hai:
 
 ```bash
 cd frontend
@@ -64,9 +92,9 @@ Mọi `fetch` gọi API cần đăng nhập phải có `credentials: "include"` 
 | Vai trò | Email | Mật khẩu |
 |---|---|---|
 | Admin | admin@gmail.com | 123456 |
-| Người dùng | tự đăng ký qua `/api/auth/register` | tối thiểu 6 ký tự |
+| Người dùng | tự đăng ký tại trang `/register` | tối thiểu 6 ký tự |
 
-Tài khoản admin có `role: "admin"` trong `backend/data/users.json`.
+Tài khoản admin có `role: "admin"` trong database.
 
 ## Tài liệu API
 
@@ -99,8 +127,9 @@ Quyền: **Công khai** = ai cũng gọi được, **Đăng nhập** = cần coo
 |---|---|---|---|---|
 | Đặt hàng | `POST /api/orders` | Đăng nhập | `items: [{ productId, quantity }]` | 201, 400, 401 |
 | Đơn của tôi | `GET /api/orders` | Đăng nhập | – | 200, 401 |
+| Hủy đơn | `PUT /api/orders/:id/cancel` | Đăng nhập | – | 200, 400, 401, 404 |
 
-Giá và tổng tiền do **server** tính từ `products.json`, không tin giá do client gửi lên.
+Giá và tổng tiền do **server** tính từ database, không tin giá do client gửi lên.
 
 ### Quản lý đơn hàng (admin)
 
@@ -126,4 +155,4 @@ Các giá trị `status` hợp lệ: `pending` (chờ xử lý), `shipping` (đa
 
 - Mỗi việc làm trên một nhánh riêng (ví dụ `backend-init`, `admin-api`, `frontend-cart`).
 - Xong thì tạo Pull Request, một bạn khác xem rồi merge vào `main`.
-- Không commit `node_modules/`, file `cookie.txt` hoặc dữ liệu thử trong `backend/data/`.
+- Không commit `node_modules/`, file `.env` hoặc `cookie.txt`.

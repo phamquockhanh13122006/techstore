@@ -49,3 +49,11 @@ h1 { margin-top: 0; }
 .order-line { margin: 4px 0; }
 .order-total { font-weight: bold; color: #dc2626; text-align: right; }
 .btn:disabled { opacity: .6; cursor: not-allowed; }
+.banner { background: linear-gradient(135deg, #1e293b, #2563eb); color: white;
+          padding: 48px 32px; border-radius: 12px; margin-bottom: 28px; text-align: center; }
+.banner h1 { margin: 0 0 12px; }
+.banner p { margin: 0 0 20px; color: #e2e8f0; }
+.banner .btn { display: inline-block; background: #fbbf24; color: #1e293b;
+               text-decoration: none; font-weight: bold; }
+.see-all { text-align: center; margin-top: 24px; }
+.see-all a { color: #2563eb; text-decoration: none; }

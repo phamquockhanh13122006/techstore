@@ -1,8 +1,10 @@
 import { NavLink } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
+import { useAuth } from '../context/AuthContext'
 
 export default function Navbar() {
   const { totalItems } = useCart()
+  const { user, logout } = useAuth()
 
   return (
     <nav className="navbar">
@@ -11,8 +13,18 @@ export default function Navbar() {
         <NavLink to="/">Trang chủ</NavLink>
         <NavLink to="/products">Sản phẩm</NavLink>
         <NavLink to="/cart">Giỏ hàng ({totalItems})</NavLink>
-        <NavLink to="/login">Đăng nhập</NavLink>
-        <NavLink to="/register">Đăng ký</NavLink>
+        {user ? (
+          <>
+            <NavLink to="/orders">Đơn hàng</NavLink>
+            <span className="hello">Xin chào, {user.name}</span>
+            <a href="#" onClick={e => { e.preventDefault(); logout() }}>Đăng xuất</a>
+          </>
+        ) : (
+          <>
+            <NavLink to="/login">Đăng nhập</NavLink>
+            <NavLink to="/register">Đăng ký</NavLink>
+          </>
+        )}
       </div>
     </nav>
   )

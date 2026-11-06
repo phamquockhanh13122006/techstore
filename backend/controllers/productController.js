@@ -10,10 +10,34 @@ const parseId = (value) => {
 const notFound = (res) =>
   res.status(404).json({ success: false, message: "Không tìm thấy sản phẩm" });
 
+const toNumber = (v) => {
+  if (v === undefined || v === "") return undefined;
+  const n = Number(v);
+  return Number.isFinite(n) ? n : undefined;
+};
+
 exports.getProducts = asyncHandler(async (req, res) => {
-  const keyword = String(req.query.keyword || "").trim();
-  const products = await productModel.findAll(keyword);
-  res.json({ success: true, data: products });
+  const q = req.query;
+  const limit = Math.min(Math.max(parseInt(q.limit) || 0, 0), 100);
+  const page = Math.max(parseInt(q.page) || 1, 1);
+
+  const { items, total } = await productModel.findAll({
+    keyword: String(q.keyword || "").trim(),
+    category: String(q.category || "").trim(),
+    minPrice: toNumber(q.minPrice),
+    maxPrice: toNumber(q.maxPrice),
+    sort: q.sort,
+    page,
+    limit,
+  });
+
+  res.json({
+    success: true,
+    data: items,
+    total,
+    page,
+    totalPages: limit ? Math.ceil(total / limit) : 1,
+  });
 });
 
 exports.getProductById = asyncHandler(async (req, res) => {

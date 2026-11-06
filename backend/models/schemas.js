@@ -56,6 +56,16 @@ const Order = mongoose.model(
         },
       ],
       total: Number,
+      shippingAddress: {
+           fullName: String,
+           phone: String,
+           address: String,
+      },
+      paymentMethod: {
+        type: String,
+        enum: ["cod", "bank"],
+        default: "cod",
+      },
       status: {
         type: String,
         enum: ["pending", "shipping", "done", "cancelled"],

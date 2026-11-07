@@ -3,10 +3,30 @@ const productModel = require("../models/productModel");
 const asyncHandler = require("../middleware/asyncHandler");
 
 exports.createOrder = asyncHandler(async (req, res) => {
-  const { items } = req.body;
+    const { items, shippingAddress, paymentMethod } = req.body;
 
   if (!Array.isArray(items) || items.length === 0) {
     return res.status(400).json({ success: false, message: "Giỏ hàng trống" });
+  }
+    // Địa chỉ và thanh toán: chưa bắt buộc, nhưng nếu gửi lên thì phải hợp lệ
+  let cleanAddress;
+  if (shippingAddress !== undefined) {
+    const { fullName, phone, address } = shippingAddress || {};
+    const ok = [fullName, phone, address].every((v) => typeof v === "string" && v.trim());
+    if (!ok) {
+      return res.status(400).json({
+        success: false,
+        message: "Thiếu họ tên, số điện thoại hoặc địa chỉ giao hàng",
+      });
+    }
+    if (!/^(0|\+84)\d{9,10}$/.test(phone.trim())) {
+      return res.status(400).json({ success: false, message: "Số điện thoại không hợp lệ" });
+    }
+    cleanAddress = { fullName: fullName.trim(), phone: phone.trim(), address: address.trim() };
+  }
+
+  if (paymentMethod !== undefined && !["cod", "bank"].includes(paymentMethod)) {
+    return res.status(400).json({ success: false, message: "Phương thức thanh toán không hợp lệ" });
   }
 
   const orderItems = [];
@@ -37,14 +57,14 @@ exports.createOrder = asyncHandler(async (req, res) => {
     });
     total += product.price * quantity;
   }
-
   const order = await orderModel.create({
     userId: req.session.user.id,
     items: orderItems,
     total,
     status: "pending",
+    ...(cleanAddress && { shippingAddress: cleanAddress }),
+    ...(paymentMethod && { paymentMethod }),
   });
-
   res.status(201).json({ success: true, message: "Đặt hàng thành công", data: order });
 });
 

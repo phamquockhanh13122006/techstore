@@ -1,10 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const c = require("../controllers/authController");
-
+const { requireLogin } = require("../middleware/requireLogin");
 router.post("/register", c.register);
 router.post("/login", c.login);
 router.post("/logout", c.logout);
 router.get("/me", c.me);
 
 module.exports = router;
+router.put("/profile", requireLogin, c.updateProfile);
+router.put("/password", requireLogin, c.changePassword);

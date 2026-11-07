@@ -2,6 +2,8 @@ require("dotenv").config();
 const express = require("express");
 const session = require("express-session");
 const cors = require("cors");
+const connectMongo = require("connect-mongo");
+const MongoStore = connectMongo.MongoStore || connectMongo.default || connectMongo;
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -13,6 +15,7 @@ app.use(
     secret: "techstore-secret-change-me",
     resave: false,
     saveUninitialized: false,
+    store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
     cookie: { httpOnly: true, maxAge: 1000 * 60 * 60 * 24 },
   })
 );

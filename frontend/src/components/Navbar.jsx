@@ -15,6 +15,7 @@ export default function Navbar() {
         <NavLink to="/cart">Giỏ hàng ({totalItems})</NavLink>
         {user ? (
           <>
+          {user.role === 'admin' && <NavLink to="/admin/orders">QL đơn hàng</NavLink>}
             <NavLink to="/orders">Đơn hàng</NavLink>
             <span className="hello">Xin chào, {user.name}</span>
             <a href="#" onClick={e => { e.preventDefault(); logout() }}>Đăng xuất</a>

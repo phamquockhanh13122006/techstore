@@ -1,4 +1,6 @@
 import { Routes, Route } from 'react-router-dom'
+import AdminRoute from './components/AdminRoute'
+import AdminOrders from './pages/AdminOrders'
 import Navbar from './components/Navbar'
 import Home from './pages/Home'
 import ProductList from './pages/ProductList'
@@ -21,6 +23,7 @@ export default function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/orders" element={<Orders />} />
+          <Route path="/admin/orders" element={<AdminRoute><AdminOrders /></AdminRoute>} />
         </Routes>
       </div>
     </>

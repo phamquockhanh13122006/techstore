@@ -8,8 +8,7 @@ export default function Orders() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
 
-  useEffect(() => {
-    if (!user) return
+  function loadOrders() {
     fetch('/api/orders', { credentials: 'include' })
       .then(res => {
         if (!res.ok) throw new Error('Không tải được đơn hàng')
@@ -18,7 +17,27 @@ export default function Orders() {
       .then(json => setOrders(json.data))
       .catch(err => setError(err.message))
       .finally(() => setLoading(false))
+  }
+
+  useEffect(() => {
+    if (!user) return
+    loadOrders()
   }, [user])
+
+  async function handleCancel(id) {
+    if (!confirm('Bạn chắc chắn muốn hủy đơn này?')) return
+    setError('')
+    const res = await fetch('/api/orders/' + id + '/cancel', {
+      method: 'PUT',
+      credentials: 'include'
+    })
+    const json = await res.json()
+    if (!res.ok) {
+      setError(json.message || 'Hủy đơn thất bại')
+      return
+    }
+    loadOrders()
+  }
 
   if (authLoading) return <p>Đang tải...</p>
   if (!user) return <Navigate to="/login" />
@@ -45,6 +64,12 @@ export default function Orders() {
             </p>
           ))}
           <p className="order-total">Tổng: {Number(o.total).toLocaleString('vi-VN')} đ</p>
+
+          {o.status === 'pending' && (
+            <button className="btn secondary" onClick={() => handleCancel(o.id)}>
+              Hủy đơn
+            </button>
+          )}
         </div>
       ))}
     </div>

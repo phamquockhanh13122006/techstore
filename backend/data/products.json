@@ -1,18 +1,18 @@
 [
-  { "id": 1, "name": "iPhone 15 128GB", "category": "Điện thoại", "price": 19990000, "image": "https://placehold.co/400x300?text=iPhone+15", "description": "Màn hình 6.1 inch, chip A16 Bionic, camera 48MP." },
-  { "id": 2, "name": "Samsung Galaxy S24", "category": "Điện thoại", "price": 17990000, "image": "https://placehold.co/400x300?text=Galaxy+S24", "description": "Màn hình Dynamic AMOLED 2X, chip Exynos 2400." },
-  { "id": 3, "name": "Xiaomi Redmi Note 13", "category": "Điện thoại", "price": 5490000, "image": "https://placehold.co/400x300?text=Redmi+Note+13", "description": "Camera 108MP, pin 5000mAh, sạc nhanh 33W." },
-  { "id": 4, "name": "MacBook Air M2", "category": "Laptop", "price": 24990000, "image": "https://placehold.co/400x300?text=MacBook+Air+M2", "description": "Chip M2, RAM 8GB, SSD 256GB, màn hình Liquid Retina." },
-  { "id": 5, "name": "Dell Inspiron 15", "category": "Laptop", "price": 13990000, "image": "https://placehold.co/400x300?text=Dell+Inspiron+15", "description": "Core i5, RAM 8GB, SSD 512GB, màn hình 15.6 inch." },
-  { "id": 6, "name": "Tai nghe AirPods Pro 2", "category": "Phụ kiện", "price": 5690000, "image": "https://placehold.co/400x300?text=AirPods+Pro+2", "description": "Chống ồn chủ động, sạc MagSafe." },
-  { "id": 7, "name": "Chuột Logitech MX Master 3S", "category": "Phụ kiện", "price": 2290000, "image": "https://placehold.co/400x300?text=MX+Master+3S", "description": "Chuột không dây, cảm biến 8000 DPI, kết nối đa thiết bị." },
-  { "id": 8, "name": "Sạc dự phòng Anker 20000mAh", "category": "Phụ kiện", "price": 890000, "image": "https://placehold.co/400x300?text=Anker+20000", "description": "Sạc nhanh 22.5W, hai cổng USB." },
+  { "id": 1, "name": "iPhone 15 128GB", "category": "Điện thoại", "price": 19990000, "image": "/images/iphone15.jpg", "description": "Màn hình 6.1 inch, chip A16 Bionic, camera 48MP." },
+  { "id": 2, "name": "Samsung Galaxy S24", "category": "Điện thoại", "price": 17990000, "image": "/images/samsungs24.jpg", "description": "Màn hình Dynamic AMOLED 2X, chip Exynos 2400." },
+  { "id": 3, "name": "Xiaomi Redmi Note 13", "category": "Điện thoại", "price": 5490000, "image": "/images/redmidnote13.jpg", "description": "Camera 108MP, pin 5000mAh, sạc nhanh 33W." },
+  { "id": 4, "name": "MacBook Air M2", "category": "Laptop", "price": 24990000, "image": "/images/MacBookAirM2.jpg", "description": "Chip M2, RAM 8GB, SSD 256GB, màn hình Liquid Retina." },
+  { "id": 5, "name": "Dell Inspiron 15", "category": "Laptop", "price": 13990000, "image": "/images/DellInspiron15.jpg", "description": "Core i5, RAM 8GB, SSD 512GB, màn hình 15.6 inch." },
+  { "id": 6, "name": "Tai nghe AirPods Pro 2", "category": "Phụ kiện", "price": 5690000, "image": "/images/TaingheAirPodsPro2.jpg", "description": "Chống ồn chủ động, sạc MagSafe." },
+  { "id": 7, "name": "Chuột Logitech MX Master 3S", "category": "Phụ kiện", "price": 2290000, "image": "/images/Chuotlogitech.jpg", "description": "Chuột không dây, cảm biến 8000 DPI, kết nối đa thiết bị." },
+  { "id": 8, "name": "Sạc dự phòng Anker 20000mAh", "category": "Phụ kiện", "price": 890000, "image": "/images/SacduphongAnker.jpg", "description": "Sạc nhanh 22.5W, hai cổng USB." },
     {
     "id": 9,
     "name": "OPPO Reno11 5G",
     "category": "Điện thoại",
     "price": 10490000,
-    "image": "https://placehold.co/400x300?text=OPPO+Reno11",
+    "image": "/images/OppoRen115G.jpg",
     "description": "Camera chân dung 50MP, sạc nhanh 67W, màn hình AMOLED 6.7 inch."
   },
   {
@@ -20,7 +20,7 @@
     "name": "Samsung Galaxy A55 5G",
     "category": "Điện thoại",
     "price": 9990000,
-    "image": "https://placehold.co/400x300?text=Galaxy+A55",
+    "image": "/images/SamsungGalaxyA555G.jpg",
     "description": "Màn hình Super AMOLED 6.6 inch, khung kim loại, pin 5000mAh."
   },
   {
@@ -28,7 +28,7 @@
     "name": "ASUS Vivobook 15",
     "category": "Laptop",
     "price": 12490000,
-    "image": "https://placehold.co/400x300?text=Vivobook+15",
+    "image": "/images/ASUSVivobook15.jpg",
     "description": "Core i5, RAM 16GB, SSD 512GB, màn hình 15.6 inch Full HD."
   },
   {
@@ -36,7 +36,7 @@
     "name": "Lenovo IdeaPad Slim 3",
     "category": "Laptop",
     "price": 11990000,
-    "image": "https://placehold.co/400x300?text=IdeaPad+Slim+3",
+    "image": "/images/LenovoIdeaPadSlim3.jpg",
     "description": "Ryzen 5, RAM 8GB, SSD 512GB, thiết kế mỏng nhẹ cho sinh viên."
   },
   {
@@ -44,7 +44,7 @@
     "name": "HP Pavilion 14",
     "category": "Laptop",
     "price": 15490000,
-    "image": "https://placehold.co/400x300?text=HP+Pavilion+14",
+    "image": "/images/HPPavilion14.jpg",
     "description": "Core i5, RAM 16GB, SSD 512GB, màn hình 14 inch viền mỏng."
   },
   {
@@ -52,7 +52,7 @@
     "name": "iPad Gen 10 64GB",
     "category": "Máy tính bảng",
     "price": 9990000,
-    "image": "https://placehold.co/400x300?text=iPad+Gen+10",
+    "image": "/images/iPadGen1064GB.jpg",
     "description": "Màn hình 10.9 inch, chip A14 Bionic, hỗ trợ Apple Pencil."
   },
   {
@@ -60,7 +60,7 @@
     "name": "Samsung Galaxy Tab S9 FE",
     "category": "Máy tính bảng",
     "price": 9490000,
-    "image": "https://placehold.co/400x300?text=Tab+S9+FE",
+    "image": "/images/SamsungGalaxyTabS9FE.jpg",
     "description": "Màn hình 10.9 inch 90Hz, kèm bút S Pen, chống nước IP68."
   },
   {
@@ -68,7 +68,7 @@
     "name": "Bàn phím cơ Keychron K2",
     "category": "Phụ kiện",
     "price": 1890000,
-    "image": "https://placehold.co/400x300?text=Keychron+K2",
+    "image": "/images/BanPhimKeychronK2.jpg",
     "description": "Bàn phím cơ không dây, kết nối Bluetooth, đèn nền LED."
   },
   {
@@ -76,7 +76,7 @@
     "name": "Cáp sạc nhanh Anker USB-C 100W",
     "category": "Phụ kiện",
     "price": 290000,
-    "image": "https://placehold.co/400x300?text=Cap+USB-C+100W",
+    "image": "/images/CapSacAnker.jpg",
     "description": "Dài 1.8m, bọc dù chống đứt, sạc nhanh laptop và điện thoại."
   },
   {
@@ -84,7 +84,7 @@
     "name": "Loa Bluetooth JBL Flip 6",
     "category": "Phụ kiện",
     "price": 2490000,
-    "image": "https://placehold.co/400x300?text=JBL+Flip+6",
+    "image": "/images/LoaJblFlip6.jpg",
     "description": "Chống nước IP67, pin 12 giờ, âm thanh mạnh mẽ."
   }
 ]

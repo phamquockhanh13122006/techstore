@@ -67,3 +67,11 @@ h1 { margin-top: 0; }
 .admin-table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; }
 .admin-table th, .admin-table td { padding: 10px 12px; border-bottom: 1px solid #e2e8f0; text-align: left; }
 .admin-table button { cursor: pointer; padding: 4px 10px; }
+.filters { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 20px; }
+.filters .search { margin-bottom: 0; flex: 1; min-width: 200px; }
+.filters select { padding: 10px 12px; border: 1px solid #cbd5e1; border-radius: 6px;
+                  font-size: 16px; background: white; }
+.pagination { display: flex; justify-content: center; align-items: center; gap: 16px; margin-top: 24px; }
+.pagination button { padding: 8px 16px; border: 1px solid #cbd5e1; background: white;
+                     border-radius: 6px; cursor: pointer; }
+.pagination button:disabled { opacity: .5; cursor: not-allowed; }

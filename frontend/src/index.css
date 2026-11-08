@@ -508,3 +508,86 @@ input:focus, select:focus, textarea:focus { border-color: var(--c1); box-shadow:
 /* Phân trang, bảng admin */
 .pagination button:not(:disabled):hover { background: var(--c1); color: white; border-color: var(--c1); }
 .admin-table th { background: linear-gradient(90deg, #ede9fe, #fce7f3); }
+/* Ảnh sản phẩm: nền trắng để không lộ sọc hai bên */
+.card img,
+.detail img,
+.cart-item img {
+  background: #fff;
+}
+
+/* Nút phân trang dùng cùng font với trang */
+.pagination button {
+  font-family: inherit;
+  font-size: 14px;
+}
+/* ===== Làm đẹp thêm ===== */
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+/* Banner cao hơn, chữ to hơn */
+.banner {
+  padding: 60px 32px;
+}
+.banner h1 {
+  font-size: 36px;
+}
+.banner .btn {
+  border-radius: 999px;
+  padding: 12px 28px;
+}
+
+/* Tiêu đề mục có thanh màu bên trái */
+.container h2 {
+  position: relative;
+  padding-left: 14px;
+}
+.container h2::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 3px;
+  bottom: 3px;
+  width: 5px;
+  border-radius: 3px;
+  background: linear-gradient(var(--c1), var(--c3));
+}
+
+/* Thẻ sản phẩm: bo tròn hơn, hiện dần, ảnh phóng nhẹ khi rê chuột */
+.card {
+  border-radius: 14px;
+  padding: 14px;
+  animation: fadeUp 0.4s ease both;
+}
+.card img {
+  transition: transform 0.25s;
+}
+.card:hover img {
+  transform: scale(1.04);
+}
+.card .price {
+  margin: 4px 0 12px;
+  font-size: 19px;
+}
+.card a {
+  display: block;
+  text-align: center;
+  padding: 8px 0;
+  border: 1.5px solid var(--c1);
+  border-radius: 8px;
+  transition: background 0.15s, color 0.15s;
+}
+.card a:hover {
+  background: var(--c1);
+  color: #fff;
+}
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}

@@ -17,12 +17,12 @@ export default function Navbar() {
           <>
             {user.role === 'admin' && (
               <>
-               <NavLink to="/admin/products">QL sản phẩm</NavLink>
-               <NavLink to="/admin/orders">QL đơn hàng</NavLink>
+                <NavLink to="/admin/products">QL sản phẩm</NavLink>
+                <NavLink to="/admin/orders">QL đơn hàng</NavLink>
               </>
             )}
             <NavLink to="/orders">Đơn hàng</NavLink>
-            <span className="hello">Xin chào, {user.name}</span>
+            <NavLink to="/profile" className="hello">Xin chào, {user.name}</NavLink>
             <a href="#" onClick={e => { e.preventDefault(); logout() }}>Đăng xuất</a>
           </>
         ) : (

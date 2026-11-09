@@ -3,6 +3,8 @@ import { Link, Navigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { confirmDialog } from '../toast'
 
+const PAYMENT_LABELS = { cod: 'Thanh toán khi nhận hàng (COD)', bank: 'Chuyển khoản ngân hàng' }
+
 export default function Orders() {
   const { user, loading: authLoading } = useAuth()
   const [orders, setOrders] = useState([])
@@ -64,6 +66,13 @@ export default function Orders() {
               {it.name} × {it.quantity} — {(it.price * it.quantity).toLocaleString('vi-VN')} đ
             </p>
           ))}
+          {o.shippingAddress && (
+            <div className="order-ship">
+              <p><strong>Người nhận:</strong> {o.shippingAddress.fullName} - {o.shippingAddress.phone}</p>
+              <p><strong>Địa chỉ:</strong> {o.shippingAddress.address}</p>
+              <p><strong>Thanh toán:</strong> {PAYMENT_LABELS[o.paymentMethod] || 'Chưa rõ'}</p>
+            </div>
+          )}
           <p className="order-total">Tổng: {Number(o.total).toLocaleString('vi-VN')} đ</p>
 
           {o.status === 'pending' && (

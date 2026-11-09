@@ -604,3 +604,14 @@ input:focus, select:focus, textarea:focus { border-color: var(--c1); box-shadow:
   font-size: 15px;
   margin-right: 0;
 }
+/* ===== Thông tin giao hàng trong đơn ===== */
+.order-ship {
+  margin: 10px 0;
+  padding: 10px 14px;
+  background: #f5f3ff;
+  border-radius: 8px;
+  font-size: 14px;
+}
+.order-ship p {
+  margin: 2px 0;
+}

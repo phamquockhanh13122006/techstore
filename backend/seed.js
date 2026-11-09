@@ -5,6 +5,7 @@ const bcrypt = require("bcryptjs");
 const mongoose = require("mongoose");
 const connectDB = require("./config/db");
 const { User, Product } = require("./models/schemas");
+const { nextId, syncCounter } = require("./models/counterModel");
 
 async function seed() {
   await connectDB();
@@ -13,14 +14,15 @@ async function seed() {
     fs.readFileSync(path.join(__dirname, "data/products.json"), "utf8")
   );
   await Product.deleteMany({});
-  await Product.insertMany(products);
+  await Product.insertMany(products.map((p) => ({ stock: 20, ...p })));
   console.log(`Đã nạp ${products.length} sản phẩm`);
+  await syncCounter("products", Product);
 
   const admin = await User.findOne({ email: "admin@gmail.com" });
   if (!admin) {
-    const last = await User.findOne().sort({ id: -1 });
+    const id = await nextId("users", User);
     await User.create({
-      id: last ? last.id + 1 : 1,
+      id,
       name: "Admin",
       email: "admin@gmail.com",
       passwordHash: bcrypt.hashSync("123456", 10),

@@ -17,7 +17,7 @@ exports.register = asyncHandler(async (req, res) => {
     return res.status(400).json({ success: false, message: "Email đã được đăng ký" });
   }
 
-  const passwordHash = bcrypt.hashSync(password, 10);
+  const passwordHash = await bcrypt.hash(password, 10);
   await userModel.create({ name, email, passwordHash });
   res.status(201).json({ success: true, message: "Đăng ký thành công" });
 });
@@ -26,7 +26,7 @@ exports.login = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
   const user = email && (await userModel.findByEmail(email));
 
-  if (!user || !bcrypt.compareSync(String(password || ""), user.passwordHash)) {
+  if (!user || !(await bcrypt.compare(String(password || ""), user.passwordHash))) {
     return res.status(401).json({ success: false, message: "Sai email hoặc mật khẩu" });
   }
 
@@ -84,7 +84,7 @@ exports.changePassword = asyncHandler(async (req, res) => {
   }
 
   // Dùng 400 (không dùng 401) để frontend không tưởng là bị đăng xuất
-  if (!bcrypt.compareSync(String(oldPassword), user.passwordHash)) {
+  if (!(await bcrypt.compare(String(oldPassword), user.passwordHash))) {
     return res.status(400).json({ success: false, message: "Mật khẩu cũ không đúng" });
   }
   if (String(oldPassword) === String(newPassword)) {
@@ -93,7 +93,7 @@ exports.changePassword = asyncHandler(async (req, res) => {
       .json({ success: false, message: "Mật khẩu mới phải khác mật khẩu cũ" });
   }
 
-  user.passwordHash = bcrypt.hashSync(String(newPassword), 10);
+  user.passwordHash = await bcrypt.hash(String(newPassword), 10);
   await user.save();
   res.json({ success: true, message: "Đổi mật khẩu thành công" });
 });

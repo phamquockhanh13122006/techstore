@@ -35,6 +35,7 @@ const Product = mongoose.model(
       price: Number,
       image: String,
       description: { type: String, default: "" },
+      stock: { type: Number, default: 0, min: 0 },
     },
     options
   )
@@ -64,7 +65,7 @@ const Order = mongoose.model(
       paymentMethod: {
         type: String,
         enum: ["cod", "bank"],
-        default: "cod",
+        
       },
       status: {
         type: String,
@@ -77,4 +78,13 @@ const Order = mongoose.model(
   )
 );
 
-module.exports = { User, Product, Order };
+// Bảng đếm để cấp id tăng dần, mỗi tên (users, products, orders) là một dòng
+const Counter = mongoose.model(
+  "Counter",
+  new mongoose.Schema(
+    { _id: String, seq: { type: Number, default: 0 } },
+    { versionKey: false }
+  )
+);
+
+module.exports = { User, Product, Order, Counter };

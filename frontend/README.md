@@ -1,16 +1,31 @@
-# React + Vite
+# TechStore - Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Giao diện web của TechStore, viết bằng React (Vite) và React Router.
 
-Currently, two official plugins are available:
+## Chạy
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+```bash
+npm install
+npm run dev
+```
 
-## React Compiler
+Mở địa chỉ Vite in ra (thường là `http://localhost:5173`). Backend phải chạy ở cổng 3000, vì `vite.config.js` chuyển mọi yêu cầu `/api` sang `http://localhost:3000`.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Các lệnh khác:
 
-## Expanding the Oxlint configuration
+```bash
+npm run build    # đóng gói bản chạy thật
+npm run lint     # kiểm tra lỗi code
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+## Cấu trúc `src/`
+
+| Thư mục / file | Nội dung |
+|---|---|
+| `pages/` | Các trang: Home, ProductList, ProductDetail, Cart, Login, Register, Orders, AdminProducts, AdminOrders |
+| `components/` | Navbar, AdminRoute (chặn người không phải admin) |
+| `context/` | AuthContext (đăng nhập), CartContext (giỏ hàng, lưu trong localStorage) |
+| `toast.js` | Thông báo `showToast` và hộp xác nhận `confirmDialog` |
+| `index.css` | Toàn bộ CSS của trang |
+
+Xem hướng dẫn cài đặt toàn dự án và tài liệu API ở `README.md` ngoài thư mục gốc.

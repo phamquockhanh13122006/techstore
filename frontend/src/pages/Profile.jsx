@@ -5,7 +5,7 @@ import { showToast } from '../toast'
 
 export default function Profile() {
   const { user, loading, updateProfile, changePassword } = useAuth()
-  const [name, setName] = useState(user?.name || '')
+  const [name, setName] = useState(null)
   const [nameError, setNameError] = useState('')
   const [oldPassword, setOldPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')

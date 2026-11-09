@@ -6,7 +6,6 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
 
-  // Khi mở web: hỏi backend xem session còn đăng nhập không
   useEffect(() => {
     fetch('/api/auth/me', { credentials: 'include' })
       .then(res => (res.ok ? res.json() : null))
@@ -43,8 +42,33 @@ export function AuthProvider({ children }) {
     setUser(null)
   }
 
+  async function updateProfile(name) {
+    const res = await fetch('/api/auth/profile', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({ name })
+    })
+    const json = await res.json()
+    if (!res.ok) throw new Error(json.message || 'Cập nhật thất bại')
+    setUser(json.user)
+  }
+
+  async function changePassword(oldPassword, newPassword) {
+    const res = await fetch('/api/auth/password', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({ oldPassword, newPassword })
+    })
+    const json = await res.json()
+    if (!res.ok) throw new Error(json.message || 'Đổi mật khẩu thất bại')
+  }
+
   return (
-    <AuthContext.Provider value={{ user, loading, login, register, logout }}>
+    <AuthContext.Provider
+      value={{ user, loading, login, register, logout, updateProfile, changePassword }}
+    >
       {children}
     </AuthContext.Provider>
   )

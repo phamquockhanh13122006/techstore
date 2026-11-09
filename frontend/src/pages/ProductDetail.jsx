@@ -36,6 +36,8 @@ export default function ProductDetail() {
     </div>
   )
 
+  const inStock = Number(product.stock) > 0
+
   return (
     <div>
       <Link to="/products">← Quay lại danh sách</Link>
@@ -45,10 +47,17 @@ export default function ProductDetail() {
           <h1>{product.name}</h1>
           <p className="category">Danh mục: {product.category}</p>
           <p className="price big">{Number(product.price).toLocaleString('vi-VN')} đ</p>
+          <p className={inStock ? 'stock in' : 'stock out'}>
+            {inStock ? 'Còn ' + product.stock + ' sản phẩm' : 'Hết hàng'}
+          </p>
           <p>{product.description}</p>
-          <button className="btn" onClick={() => { addToCart(product);  showToast('Đã thêm vào giỏ hàng!') }}>
-  Thêm vào giỏ hàng
-</button>
+          <button
+            className="btn"
+            disabled={!inStock}
+            onClick={() => { addToCart(product); showToast('Đã thêm vào giỏ hàng!') }}
+          >
+            {inStock ? 'Thêm vào giỏ hàng' : 'Hết hàng'}
+          </button>
         </div>
       </div>
     </div>

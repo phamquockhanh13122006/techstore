@@ -64,6 +64,12 @@ function checkFields(data, requireAll) {
       return "Giá phải là số lớn hơn 0";
     }
   }
+  if (data.stock !== undefined) {
+    const stock = Number(data.stock);
+    if (!Number.isInteger(stock) || stock < 0 || stock > 100000) {
+      return "Tồn kho phải là số nguyên từ 0 đến 100000";
+    }
+  }
   return null;
 }
 
@@ -73,7 +79,7 @@ exports.createProduct = asyncHandler(async (req, res) => {
     return res.status(400).json({ success: false, message: error });
   }
 
-  const { name, category, price, image, description } = req.body;
+  const { name, category, price, image, description, stock } = req.body;
   const product = await productModel.create({
     name: name.trim(),
     category: category.trim(),
@@ -81,6 +87,7 @@ exports.createProduct = asyncHandler(async (req, res) => {
     image:
       image || "https://placehold.co/400x300?text=" + encodeURIComponent(name.trim()),
     description: description || "",
+    stock: stock === undefined ? 0 : Number(stock),
   });
 
   res.status(201).json({ success: true, message: "Thêm sản phẩm thành công", data: product });
@@ -96,12 +103,13 @@ exports.updateProduct = asyncHandler(async (req, res) => {
     return res.status(400).json({ success: false, message: error });
   }
 
-  const { name, category, price, image, description } = req.body;
+  const { name, category, price, image, description, stock } = req.body;
   if (name !== undefined) product.name = name.trim();
   if (category !== undefined) product.category = category.trim();
   if (price !== undefined) product.price = Number(price);
   if (image !== undefined) product.image = image;
   if (description !== undefined) product.description = description;
+  if (stock !== undefined) product.stock = Number(stock);
 
   await product.save();
   res.json({ success: true, message: "Cập nhật sản phẩm thành công", data: product });

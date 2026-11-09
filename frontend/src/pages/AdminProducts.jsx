@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { confirmDialog } from '../toast'
 
 const EMPTY = { name: '', category: '', price: '', image: '', description: '' }
 
@@ -54,7 +55,7 @@ export default function AdminProducts() {
   }
 
   async function handleDelete(p) {
-    if (!confirm('Xóa sản phẩm "' + p.name + '"?')) return
+    if (!(await confirmDialog('Xóa sản phẩm "' + p.name + '"?', 'Xóa', 'Hủy bỏ'))) return
     const res = await fetch('/api/products/' + p.id, {
       method: 'DELETE',
       credentials: 'include'

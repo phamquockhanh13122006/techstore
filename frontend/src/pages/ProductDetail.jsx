@@ -1,6 +1,7 @@
 import { useCart } from '../context/CartContext'
 import { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
+import { showToast } from '../toast'
 
 export default function ProductDetail() {
   const { id } = useParams()
@@ -45,7 +46,7 @@ export default function ProductDetail() {
           <p className="category">Danh mục: {product.category}</p>
           <p className="price big">{Number(product.price).toLocaleString('vi-VN')} đ</p>
           <p>{product.description}</p>
-          <button className="btn" onClick={() => { addToCart(product); alert('Đã thêm vào giỏ hàng!') }}>
+          <button className="btn" onClick={() => { addToCart(product);  showToast('Đã thêm vào giỏ hàng!') }}>
   Thêm vào giỏ hàng
 </button>
         </div>

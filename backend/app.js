@@ -7,16 +7,27 @@ const MongoStore = connectMongo.MongoStore || connectMongo.default || connectMon
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const isProd = process.env.NODE_ENV === "production";
+if (!process.env.SESSION_SECRET) {
+  if (isProd) {
+    console.error("Thiếu SESSION_SECRET trong .env");
+    process.exit(1);
+  }
+  console.warn("Cảnh báo: chưa có SESSION_SECRET, đang dùng secret mặc định (chỉ dùng khi phát triển)");
+}
+const allowedOrigins = (process.env.CLIENT_ORIGIN || "http://localhost:5173")
+  .split(",")
+  .map((s) => s.trim());
 
-app.use(cors({ origin: true, credentials: true }));
+app.use(cors({ origin: allowedOrigins, credentials: true }));
 app.use(express.json());
 app.use(
   session({
-    secret: "techstore-secret-change-me",
+    secret: process.env.SESSION_SECRET || "techstore-dev-only-secret",
     resave: false,
     saveUninitialized: false,
     store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
-    cookie: { httpOnly: true, maxAge: 1000 * 60 * 60 * 24 },
+    cookie: { httpOnly: true, sameSite: "lax", secure: isProd, maxAge: 1000 * 60 * 60 * 24 },
   })
 );
 

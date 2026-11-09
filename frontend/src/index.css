@@ -508,3 +508,99 @@ input:focus, select:focus, textarea:focus { border-color: var(--c1); box-shadow:
 /* Phân trang, bảng admin */
 .pagination button:not(:disabled):hover { background: var(--c1); color: white; border-color: var(--c1); }
 .admin-table th { background: linear-gradient(90deg, #ede9fe, #fce7f3); }
+/* ===== Form giao hàng ===== */
+.checkout {
+  margin-top: 24px;
+  padding: 24px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+}
+.checkout h3 {
+  margin: 0 0 14px;
+}
+.checkout input:not([type="radio"]) {
+  display: block;
+  width: 100%;
+  margin-bottom: 12px;
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 15px;
+}
+.payment {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 6px 0 4px;
+}
+.payment label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+.checkout .cart-total {
+  margin-top: 16px;
+  padding: 16px 0 0;
+  background: none;
+  border: none;
+  border-top: 1px solid #e5e7eb;
+  border-radius: 0;
+}
+/* ===== Thông báo ===== */
+.toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+  padding: 12px 20px;
+  border-radius: 10px;
+  color: #fff;
+  font-size: 15px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  animation: toast-in 0.25s ease-out;
+}
+.toast.success { background: #16a34a; }
+.toast.error { background: #dc2626; }
+@keyframes toast-in {
+  from { opacity: 0; transform: translateY(-12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.order-done {
+  text-align: center;
+  padding: 60px 0;
+}
+/* ===== Hộp xác nhận ===== */
+.confirm-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(15, 23, 42, 0.45);
+  animation: toast-in 0.2s ease-out;
+}
+.confirm-box {
+  width: 90%;
+  max-width: 380px;
+  padding: 24px;
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 20px 50px rgba(124, 58, 237, 0.3);
+}
+.confirm-box p {
+  margin: 0 0 20px;
+  font-size: 16px;
+}
+.confirm-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+.confirm-actions .btn {
+  padding: 8px 18px;
+  font-size: 15px;
+  margin-right: 0;
+}

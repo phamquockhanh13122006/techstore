@@ -1,4 +1,5 @@
 const { Product } = require("./schemas");
+const { nextId } = require("./counterModel");
 
 // Thoát các ký tự đặc biệt của regex để từ khóa tìm kiếm không làm hỏng truy vấn
 const escapeRegex = (text) => text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -32,8 +33,23 @@ exports.findAll = async ({ keyword, category, minPrice, maxPrice, sort, page = 1
 exports.findById = (id) => Product.findOne({ id });
 
 exports.create = async (data) => {
-  const last = await Product.findOne().sort({ id: -1 });
-  return Product.create({ id: last ? last.id + 1 : 1, ...data });
+  const id = await nextId("products", Product);
+  return Product.create({ id, ...data });
 };
 
 exports.remove = (id) => Product.findOneAndDelete({ id });
+
+// Trừ kho nguyên tử: điều kiện stock >= quantity nằm ngay trong lệnh cập nhật,
+// nên hai đơn cùng lúc không thể trừ quá số hàng còn. Trả về false nếu không đủ hàng.
+exports.reserveStock = async (productId, quantity) => {
+  const updated = await Product.findOneAndUpdate(
+    { id: productId, stock: { $gte: quantity } },
+    { $inc: { stock: -quantity } },
+    { new: true }
+  );
+  return Boolean(updated);
+};
+
+// Cộng lại kho (hủy đơn, hoặc hoàn tác khi đặt hàng giữa chừng bị lỗi)
+exports.releaseStock = (productId, quantity) =>
+  Product.updateOne({ id: productId }, { $inc: { stock: quantity } });

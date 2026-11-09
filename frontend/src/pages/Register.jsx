@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
+import { showToast } from '../toast'
 
 export default function Register() {
   const { register } = useAuth()
@@ -14,7 +15,7 @@ export default function Register() {
     e.preventDefault()
     try {
       await register(name, email, password)
-      alert('Đăng ký thành công, hãy đăng nhập!')
+      showToast('Đăng ký thành công, hãy đăng nhập!')
       navigate('/login')
     } catch (err) {
       setError(err.message)

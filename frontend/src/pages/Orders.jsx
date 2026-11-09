@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link, Navigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
+import { confirmDialog } from '../toast'
 
 export default function Orders() {
   const { user, loading: authLoading } = useAuth()
@@ -25,7 +26,7 @@ export default function Orders() {
   }, [user])
 
   async function handleCancel(id) {
-    if (!confirm('Bạn chắc chắn muốn hủy đơn này?')) return
+    if (!(await confirmDialog('Bạn chắc chắn muốn hủy đơn này?', 'Hủy đơn', 'Giữ lại'))) return
     setError('')
     const res = await fetch('/api/orders/' + id + '/cancel', {
       method: 'PUT',

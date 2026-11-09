@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { confirmDialog } from '../toast'
 
-const EMPTY = { name: '', category: '', price: '', image: '', description: '' }
+const EMPTY = { name: '', category: '', price: '', stock: '', image: '', description: '' }
 
 export default function AdminProducts() {
   const [products, setProducts] = useState([])
@@ -30,7 +30,11 @@ export default function AdminProducts() {
       method: editingId ? 'PUT' : 'POST',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
-      body: JSON.stringify({ ...form, price: Number(form.price) })
+      body: JSON.stringify({
+        ...form,
+        price: Number(form.price),
+        stock: form.stock === '' ? 0 : Number(form.stock)
+      })
     })
     const json = await res.json()
     if (!res.ok) {
@@ -48,6 +52,7 @@ export default function AdminProducts() {
       name: p.name,
       category: p.category,
       price: p.price,
+      stock: p.stock ?? 0,
       image: p.image,
       description: p.description
     })
@@ -80,6 +85,9 @@ export default function AdminProducts() {
                value={form.category} onChange={handleChange} required />
         <input name="price" type="number" min="1" placeholder="Giá"
                value={form.price} onChange={handleChange} required />
+        <input name="stock" type="number" min="0" max="100000" step="1"
+               placeholder="Tồn kho (số lượng hiện có)"
+               value={form.stock} onChange={handleChange} required />
         <input name="image" placeholder="Link ảnh (để trống thì tự tạo)"
                value={form.image} onChange={handleChange} />
         <textarea name="description" placeholder="Mô tả"
@@ -99,7 +107,7 @@ export default function AdminProducts() {
       <div className="table-wrap">
         <table className="admin-table">
           <thead>
-            <tr><th>ID</th><th>Tên</th><th>Danh mục</th><th>Giá</th><th></th></tr>
+            <tr><th>ID</th><th>Tên</th><th>Danh mục</th><th>Giá</th><th>Tồn kho</th><th></th></tr>
           </thead>
           <tbody>
             {products.map(p => (
@@ -108,6 +116,9 @@ export default function AdminProducts() {
                 <td>{p.name}</td>
                 <td>{p.category}</td>
                 <td>{Number(p.price).toLocaleString('vi-VN')} đ</td>
+                <td className={Number(p.stock) > 0 ? '' : 'stock out'}>
+                  {Number(p.stock) > 0 ? p.stock : 'Hết hàng'}
+                </td>
                 <td>
                   <button onClick={() => startEdit(p)}>Sửa</button>{' '}
                   <button className="remove" onClick={() => handleDelete(p)}>Xóa</button>

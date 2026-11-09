@@ -67,7 +67,8 @@ export default function ProductList() {
 
       <div className="grid">
         {products.map(p => (
-          <div className="card" key={p.id}>
+                    <div className="card" key={p.id}>
+            {Number(p.stock) <= 0 && <span className="badge-out">Hết hàng</span>}
             <img src={p.image} alt={p.name} />
             <h3>{p.name}</h3>
             <p className="price">{Number(p.price).toLocaleString('vi-VN')} đ</p>
